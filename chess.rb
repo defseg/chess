@@ -43,9 +43,7 @@ class HumanPlayer
       puts "#{@color}: enter input"
       input = gets.chomp
       parsed_input = parse_input(input)
-      p parsed_input
       start, end_pos = parsed_input
-      p start
       @game_board.move(start, end_pos, @color)
     rescue MoveError => e
       puts e
@@ -68,16 +66,17 @@ class HumanPlayer
     col_num = col_string.ord - 97 # TODO refactor with hash?
                                   # this should be between 0 and 7 (board size)
 
-    row_num = @ROW_SIZE - (row_string.to_i)
+    row_num = @game_board.ROW_SIZE - (row_string.to_i)
 
-    col_upper_limit = (97 + @ROW_SIZE - 1).chr
+    col_upper_limit = (97 + @game_board.ROW_SIZE - 1).chr
     unless col_string.between?('a',col_upper_limit) &&
             row_string.between?('1','8') && col_string.length == 1 &&
             row_string.length == 1
       raise MoveError.new "Invalid move string"
     end
 
-    unless row_num.between?(0, @ROW_SIZE-1) && col_num.between?(0, @COL_SIZE-1)
+    unless row_num.between?(0, @game_board.ROW_SIZE-1) &&
+            col_num.between?(0, @game_board.COL_SIZE-1)
       raise MoveError.new "Move coordinates are outside board size"
     end
 

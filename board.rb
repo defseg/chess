@@ -9,6 +9,7 @@ require 'colorize'
 
 class Board
 
+  attr_reader :ROW_SIZE, :COL_SIZE
 
   def pieces(color = nil)
     @grid.flatten.compact.select { |piece| color.nil? ? true : piece.color == color }
