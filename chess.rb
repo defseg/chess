@@ -68,9 +68,21 @@ class HumanPlayer
     col_num = col_string.ord - 97 # TODO refactor with hash?
                                   # this should be between 0 and 7 (board size)
 
-    row_num = 8 - (row_string.to_i)
+    row_num = @ROW_SIZE - (row_string.to_i)
+
+    col_upper_limit = (97 + @ROW_SIZE - 1).chr
+    unless col_string.between?('a',col_upper_limit) &&
+            row_string.between?('1','8') && col_string.length == 1 &&
+            row_string.length == 1
+      raise MoveError.new "Invalid move string"
+    end
+
+    unless row_num.between?(0, @ROW_SIZE-1) && col_num.between?(0, @COL_SIZE-1)
+      raise MoveError.new "Move coordinates are outside board size"
+    end
 
     [row_num, col_num]
+
   end
 
 end
