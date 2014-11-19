@@ -31,18 +31,30 @@ class Board
   end
 
   def initialize(start = true)
-    @grid = Array.new(8) { Array.new(8) }
+    @ROW_SIZE = 6
+    @COL_SIZE = 6
+    @grid = Array.new(@ROW_SIZE) { Array.new(@COL_SIZE) }
     set_pieces if start
   end
 
   def set_pieces
     # pawns
-    @grid[1].each_index { |i| @grid[1][i] = Pawn.new([1,i], :black, self) }
-    @grid[6].each_index { |i| @grid[6][i] = Pawn.new([6,i], :white, self) }
+    @grid[1].each_index do |i|
+      @grid[1][i] = Pawn.new([1,i], :black, self)
+    end
+    white_pawn_loc = @ROW_SIZE - 2
+    @grid[white_pawn_loc].each_index do |i|
+      @grid[white_pawn_loc][i] = Pawn.new([white_pawn_loc,i], :white, self)
+    end
     # back rows
-    back = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
-    @grid[0].each_index { |i| @grid[0][i] = back[i].new([0,i], :black, self) }
-    @grid[7].each_index { |i| @grid[7][i] = back[i].new([7,i], :white, self) }
+    back = [Rook, Knight, Queen, King, Knight, Rook]
+    @grid[0].each_index do |i|
+      @grid[0][i] = back[i].new([0,i], :black, self)
+    end
+    white_piece_loc = @ROW_SIZE - 1
+    @grid[white_piece_loc].each_index do |i|
+      @grid[white_piece_loc][i] = back[i].new([white_piece_loc,i], :white, self)
+    end
   end
 
   # check it.
@@ -101,8 +113,8 @@ class Board
   def render
 
     color = :white
-    puts " abcdefgh"
-    row_counter = 9
+    puts " abcdef"
+    row_counter = @ROW_SIZE + 1
     render = @grid.map do |row|
       color = flip_color(color)
       row_string = row.map do |cell|
