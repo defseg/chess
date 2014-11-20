@@ -30,6 +30,7 @@ class Board
   def initialize(start = true)
     @grid = Array.new(8) { Array.new(8) }
     set_pieces if start
+    @captured = []
   end
 
   def set_pieces
@@ -74,6 +75,11 @@ class Board
       raise MoveError.new "You can't move your opponent's pieces!"
     end
 
+    # put captured pieces into the captured array
+    unless self[end_pos].nil?
+      @captured << self[end_pos]
+    end
+
     # Castling
     if piece.is_a?(King)
       if end_pos[1] - start[1] == 2 #kingside
@@ -82,11 +88,8 @@ class Board
         move!([start[0], 0],[start[0], 3])
       end
     end
+
     move!(start, end_pos)
-
-    # castling logic goes here
-
-
 
     self
   end
@@ -117,13 +120,28 @@ class Board
       [row_counter.to_s, row_string].join
     end.join("\n")
 
+    white_captured_pieces = captured_string(:white, true)
+    white_captured_pawns  = captured_string(:white, false)
+    black_captured_pieces = captured_string(:black, true)
+    black_captured_pawns  = captured_string(:black, false)
+
     puts render
+    puts "#{white_captured_pieces} #{white_captured_pawns}"
+    puts "#{black_captured_pieces} #{black_captured_pawns}"
   end
 
   private
 
     def flip_color(color)
       color == :white ? :light_white : :white
+    end
+
+    def captured_string(color, get_pieces_q)
+      @captured.select do |piece|
+        piece.color == color && ((piece.is_a?(Pawn)) ^ get_pieces_q)
+      end.map do |piece|
+        piece.render
+      end.join('')
     end
 
 end
