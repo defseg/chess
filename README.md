@@ -1,3 +1,8 @@
+Chess
+-----
+
+Expects input in algebraic chess notation
+
 #Game code structure
 
 ##Pieces

@@ -102,18 +102,4 @@ class ComputerPlayer < Player
         acc + PIECE_VALUES[piece.class]
       end
     end
-
-
-
-
-  #
-  #   def search_moves(board, counter = 5, search_color = color)
-  #     if counter == 0
-  #       # base condition
-  #     elsif search_color == color
-  #       # call search_moves, switch color
-  #     else
-  #       # call search_moves, switch color, decrement
-  #     end
-  #   end
 end
