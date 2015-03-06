@@ -1,7 +1,13 @@
 Chess
 -----
 
-Expects input in algebraic chess notation
+Expects input in algebraic chess notation.
+
+To play, load chess.rb in irb/pry, and:
+
+`g = Game.new`
+
+`g.play`
 
 #Game code structure
 
